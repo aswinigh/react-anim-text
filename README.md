@@ -15,12 +15,12 @@ npm install --save react-anim-text
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'react-anim-text'
+import GrowText from 'react-anim-text'
 import 'react-anim-text/dist/index.css'
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <GrowText text="Animated text here" />
   }
 }
 ```
