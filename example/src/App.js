@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { ExampleComponent } from 'react-anim-text'
+import { AnimText } from 'react-anim-text'
 import 'react-anim-text/dist/index.css'
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <AnimText text="Animated text here" />
 }
 
 export default App
