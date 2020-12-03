@@ -18,9 +18,10 @@ import React, { Component } from 'react'
 import GrowText from 'react-anim-text'
 import 'react-anim-text/dist/index.css'
 
+const TextList = ["Animated","text","here"];
 class Example extends Component {
   render() {
-    return <GrowText text="Animated text here" />
+    return <GrowText textList={TextList} duration={3000} />
   }
 }
 ```

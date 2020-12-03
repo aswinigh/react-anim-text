@@ -51,6 +51,7 @@
     "dist"
   ],
   "dependencies": {
-    "animejs": "^3.2.1"
+    "@popmotion/easing": "^1.0.2",
+    "popmotion": "^8.7.6"
   }
 }
