@@ -9,6 +9,7 @@
 ```bash
 npm install --save react-anim-text
 ```
+![Text Animation](https://github.com/aswinigh/react-anim-text/blob/main/Images/GrowTextExample.gif)
 
 ## Usage
 
