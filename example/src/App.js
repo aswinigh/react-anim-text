@@ -1,11 +1,17 @@
 import React from 'react'
 
-import  {GrowText}  from 'react-anim-text'
+import  {LetterFlow, GrowText}  from 'react-anim-text'
 import 'react-anim-text/dist/index.css'
 
-const textArray = ["Animated", "Text", "Here"]
+const text = "Hello";
+const textList = ["Animated", "Text", "Here"];
 const App = () => {
-  return <GrowText textList = {textArray} duration ={4000} />
+  return(
+    <div>
+     <LetterFlow text = {text} duration ={1500} />
+    <GrowText textList = {textList} duration={3000}/>
+    </div>
+    );
 }
 
 export default App

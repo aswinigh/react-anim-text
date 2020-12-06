@@ -1,3 +1,3 @@
 import GrowText from './GrowText';
-
-export {GrowText};
+import LetterFlow from './LetterFlow';
+export {GrowText, LetterFlow};
