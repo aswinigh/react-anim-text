@@ -1,6 +1,6 @@
 {
   "name": "react-anim-text",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Package for animating text",
   "author": "aswinigh",
   "license": "MIT",
@@ -50,8 +50,6 @@
   "files": [
     "dist"
   ],
-  "dependencies": {
-    "@popmotion/easing": "^1.0.2",
-    "popmotion": "^8.7.6"
-  }
+  "dependencies": {},
+  "sideEffects": false
 }
