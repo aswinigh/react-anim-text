@@ -1,67 +1,54 @@
-import React, { Component } from 'react'
+import React, {useEffect, useRef, useState } from 'react'
 import './styles.module.css'
-import {easing,stagger,keyframes} from 'popmotion'
+import animate from './utils/animate.ts'
 
 const initialPhase = {scale:0.2, opacityVal:1}
 
-class GrowText extends Component
-{
 
-   constructor(props){
-     super(props);
+function GrowText(props) {
 
-     this.ref = React.createRef();
-     const countofwords = this.props.textList.length;
-     this.state = {
-      animations: [...Array(countofwords).keys()].map(() => (initialPhase)),
-      delay : 500,
-      count: countofwords
-     };
-   }
+  let count = 0;
+  let done = false;
+  const [animationState, setAnimationState] = useState(initialPhase);
+  const requestRef = useRef();
+  const previousTimeRef = useRef();
+  const keyframes = {
+    values: [{scale:0.2, opacityVal: 0},{scale:1, opacityVal: 1}],
+    duration: props.duration,
+    times: [0,1],
+    easings: ['quadratic'],
+    startOffset: 0
+  }
 
-   growAnimation = () =>{
-     const Keyframes = Array(this.state.count).fill(
-       keyframes({
-         values: [initialPhase, {scale: 1, opacityVal: 1},{scale:1, opacityVal:1},
-        {scale: 2, opacityVal: 0}, {scale:1, opacityVal: 0}],
-        times: [0,0.1,0.3,0.5,1],  
-        duration: this.props.duration,
-          loop: Infinity,
-          // delay: this.props.duration,
-          easings: [easing.linear, easing.linear, easing.backOut, easing.backInOut]
-          // yoyo: Infinity
-       })
-     );
+  const frameUpdate = time => {
+    if (previousTimeRef.current != undefined) {
+      const deltaTime = time - previousTimeRef.current;
+      
+      // Pass on a function to the setter of the state
+      // to make sure we always have the latest state
+      count = (count + deltaTime * 0.001);
+      
+      setAnimationState(
+       animate(count, keyframes)
+        );
+    }
+    previousTimeRef.current = time;
+    if(count<props.duration)
+      requestRef.current = requestAnimationFrame(frameUpdate);
+  }
 
-     stagger(Keyframes, this.props.duration/this.state.count).start(
-       animations => {
-         this.setState({animations})
-       }
-     )
-   } 
-   componentDidMount()
-   {
-     this.growAnimation();
-     
-   }
-
-   render(){
+  useEffect(() => {
+    requestRef.current = requestAnimationFrame(frameUpdate);
+    return () => cancelAnimationFrame(requestRef.current);
+  }, []);
      return (
       <h1 style = {{position: "relative", fontWeight: "900"}}>
-      {
-      this.state.animations.map(({opacityVal, scale}, index) => {
-        // console.log(scale);
-        return( 
-          
-        <div style = {{...styles,transform: "scale("+scale+")", opacity: opacityVal}}>{this.props.textList[index]}</div>
-        )
-      })
-      }
-     
-     
+   
+        <div style = {{...styles,transform: "scale("+animationState.scale+")", opacity: animationState.opacityVal}}>{props.textList[0]}</div>
+
       </h1>
      );
-   }
+   
 }
 
 const styles = {
