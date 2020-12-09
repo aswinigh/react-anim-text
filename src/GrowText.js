@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState } from 'react'
 import './styles.module.css'
 import animate from './utils/animate.ts'
 
-const initialPhase = {scale:0.2, opacityVal:1}
+const initialPhase = {scale:0.2, opacityVal:0}
 
 
 function GrowText(props) {
@@ -13,11 +13,11 @@ function GrowText(props) {
   const requestRef = useRef();
   const previousTimeRef = useRef();
   const keyframes = {
-    values: [{scale:0.2, opacityVal: 0},{scale:1, opacityVal: 1}],
+    values: [{scale:0.2, opacityVal: 0},{scale:1, opacityVal: 1},{scale:2, opacityVal: 0}],
     duration: props.duration,
-    times: [0,1],
-    easings: ['quadratic'],
-    startOffset: 0
+    times: [0,0.5,1],
+    easings: ['quadratic','quadratic'],
+    startOffset: 1
   }
 
   const frameUpdate = time => {
@@ -27,13 +27,14 @@ function GrowText(props) {
       // Pass on a function to the setter of the state
       // to make sure we always have the latest state
       count = (count + deltaTime * 0.001);
-      
-      setAnimationState(
-       animate(count, keyframes)
+      if(count>keyframes.startOffset)
+        setAnimationState(
+          animate(count-keyframes.startOffset, keyframes)
         );
     }
     previousTimeRef.current = time;
-    if(count<props.duration)
+    
+    if(count-keyframes.startOffset<props.duration)
       requestRef.current = requestAnimationFrame(frameUpdate);
   }
 
@@ -43,7 +44,7 @@ function GrowText(props) {
   }, []);
      return (
       <h1 style = {{position: "relative", fontWeight: "900"}}>
-   
+        
         <div style = {{...styles,transform: "scale("+animationState.scale+")", opacity: animationState.opacityVal}}>{props.textList[0]}</div>
 
       </h1>

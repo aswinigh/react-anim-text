@@ -1,59 +1,75 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './styles.module.css'
-import {easing,stagger,keyframes} from 'popmotion'
+import animate from './utils/animate.ts';
 
 const initialPhase = {scale:4, opacityVal:0}
 
-class LetterFlow extends Component
+function LetterFlow(props)
 {
+  const textList = props.text.split("");
+  
+  const countofwords = textList.length;
+  // console.log(textList);
+  // console.log(countofwords);
+    const [animationState, setAnimationState] = useState(Array(countofwords).fill(initialPhase)); 
+    const requestRef = useRef();
+    const previousTimeRef = useRef(); 
+    let count=0;
+  let keyframes = new Array(countofwords);
+  let animationStates = Array(countofwords).fill(initialPhase);
+  for(let i=0;i<countofwords;i++){
+    keyframes[i] = {
+    values: [{scale: 4, opacityVal: 0},{scale:1, opacityVal:1}],
+    times: [0,1],  
+    duration: props.duration/countofwords,
+    easings: ['quadratic'],
+    startOffset: 0.5+i*0.5
+   };
+  }
+  // console.log(keyframes);
+   const frameUpdate = time => {
+    if (previousTimeRef.current != undefined) {
+      const deltaTime = time - previousTimeRef.current;
+      
+      // Pass on a function to the setter of the state
+      // to make sure we always have the latest state
+      count = (count + deltaTime * 0.001);
+      if(count>keyframes[0].startOffset)
+      {
+        for(let i=0;i<countofwords;i++)
+        { 
+          // console.log("I"+i);
+          // console.log(keyframes[i]);
+          if(count>keyframes[i].startOffset)
+            animationStates[i] = animate(count-keyframes[i].startOffset, keyframes[i]);
+        }
+        console.log(animationStates[0].scale)
+        setAnimationState(
+          [...animationStates]
+        );
+      }
+    }
+    previousTimeRef.current = time;
+    
+    if(count-keyframes[countofwords-1].startOffset<props.duration)
+      requestRef.current = requestAnimationFrame(frameUpdate);
+  }
 
-   constructor(props){
-     super(props);
+  useEffect(() => {
+    requestRef.current = requestAnimationFrame(frameUpdate);
+    return () => cancelAnimationFrame(requestRef.current);
+  }, []);
+  
 
-     this.ref = React.createRef();
-     this.textList = this.props.text.split("");
-     const countofwords = this.textList.length;
-     this.state = {
-      animations: [...Array(countofwords).keys()].map(() => (initialPhase)),
-      delay : 500,
-      count: countofwords
-     };
-   }
-
-   growAnimation = () =>{
-     const Keyframes = Array(this.state.count).fill(
-       keyframes({
-         values: [{scale: 4, opacityVal: 0},{scale:1, opacityVal:1}],
-        times: [0,1],  
-        duration: this.props.duration/this.state.count,
-          // loop: Infinity,
-          // delay: this.props.duration,
-          easings: [easing.linear, easing.linear, easing.backOut, easing.backInOut]
-          // yoyo: Infinity
-       })
-     );
-
-     stagger(Keyframes, this.props.duration/this.state.count).start(
-       animations => {
-         this.setState({animations})
-       }
-     )
-   } 
-   componentDidMount()
-   {  setTimeout(this.growAnimation(),1000);
-    //  this.growAnimation();
-     
-   }
-
-   render(){
+   
      return (
       <h1 style = {{textAlign: "center", fontWeight: "900"}}>
       { 
-      this.state.animations.map(({opacityVal, scale}, index) => {
+      animationState.map(({opacityVal, scale}, index) => {
         // console.log(scale);
         return( 
           
-        <span style = {{display:"inline-block" ,transform: "scale("+scale+") translateZ(0px)" , opacity: opacityVal}}>{this.textList[index]}</span>
+        <span style = {{display:"inline-block" ,transform: "scale("+scale+") translateZ(0px)" , opacity: opacityVal}}>{textList[index]}</span>
         
         )
       })
@@ -62,7 +78,7 @@ class LetterFlow extends Component
      
       </h1>
      );
-   }
+   
 }
 
 

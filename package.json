@@ -50,9 +50,6 @@
   "files": [
     "dist"
   ],
-  "dependencies": {
-    "@popmotion/easing": "^1.0.2",
-    "popmotion": "^8.7.6"
-  },
+  "dependencies": {},
   "sideEffects": false
 }

@@ -1,13 +1,19 @@
 import tween from './tween.ts'
 
 const animate = (t,keyframes) => {
-    const valueIndex = 0;
+    let valueIndex = -1;
+    
+    keyframes.times.forEach(time => {
+        if(time<t/keyframes.duration && time<1)
+            valueIndex +=1;
+    });
     let a  = {};
-    // console.log("Animating:" + t);
+    let deltaTime = keyframes.times[valueIndex+1] - keyframes.times[valueIndex];
+    // console.log("Animating:" + valueIndex);
     let keyList = Object.keys(keyframes.values[valueIndex]);
     keyList.forEach(key => {
-        a = {...a, [key]: tween(t,keyframes.values[valueIndex][key],
-             keyframes.values[valueIndex+1][key], keyframes.duration, keyframes.easings[valueIndex])}
+        a = {...a, [key]: tween(t-keyframes.times[valueIndex],keyframes.values[valueIndex][key],
+             keyframes.values[valueIndex+1][key], keyframes.duration*(deltaTime), keyframes.easings[valueIndex])}
     });
     
     return a;
