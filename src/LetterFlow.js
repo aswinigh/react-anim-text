@@ -40,7 +40,7 @@ function LetterFlow(props)
         { 
           // console.log("I"+i);
           // console.log(keyframes[i]);
-          if(count>keyframes[i].startOffset)
+          if(count>keyframes[i].startOffset && count<keyframes[i].startOffset+keyframes[i].duration)
             animationStates[i] = animate(count-keyframes[i].startOffset, keyframes[i]);
         }
         console.log(animationStates[0].scale)
