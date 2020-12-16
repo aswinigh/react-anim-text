@@ -9,6 +9,9 @@ const easings = ["easeInBounce","easeInCubic","easeOutBounce"];
 const App = () => {
   return(
     <div>
+    
+    <LetterFlow text = {text} duration={1}/>
+    
     <GrowText textList = {textList} duration={1} easings={easings}/>
     </div>
     );
