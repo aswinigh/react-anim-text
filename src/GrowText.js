@@ -16,7 +16,7 @@ function GrowText(props) {
     values: [{scale:0.2, opacityVal: 0},{scale:1, opacityVal: 1},{scale:2, opacityVal: 0}],
     duration: props.duration,
     times: [0,0.5,1],
-    easings: ['quadratic','quadratic'],
+    easings: props.easings,
     startOffset: 1
   }
 
