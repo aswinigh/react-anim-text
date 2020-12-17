@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './styles.module.css'
 import animate from './utils/animate.ts';
+import {animationMap} from './utils/animations.ts';
 
 const initialPhase = {scale:4, opacityVal:0}
 
-function LetterFlow(props)
+function LetterAnimation(props)
 {
   const textList = props.text.split("");
   
@@ -19,10 +20,8 @@ function LetterFlow(props)
   let animationStates = Array(countofwords).fill(initialPhase);
   for(let i=0;i<countofwords;i++){
     keyframes[i] = {
-    values: [{scale: 4, opacityVal: 0},{scale:1, opacityVal:1}],
-    times: [0,1],  
-    duration: props.duration/countofwords,
-    easings: ['quadratic'],
+    ...animationMap[props.type],
+    duration: props.duration/countofwords, 
     startOffset: 0.5+i*0.5
    };
   }
@@ -82,4 +81,4 @@ function LetterFlow(props)
 }
 
 
-export default LetterFlow;
+export default LetterAnimation;

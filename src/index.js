@@ -1,4 +1,4 @@
-import GrowText from './GrowText';
-import LetterFlow from './LetterFlow';
+import WordAnimation from './WordAnimation'
+import LetterAnimation from './LetterAnimation';
 
-export {GrowText, LetterFlow};
+export {WordAnimation, LetterAnimation};

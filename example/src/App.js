@@ -1,18 +1,18 @@
 import React from 'react'
 
-import  {LetterFlow, GrowText}  from 'react-anim-text'
+import  {LetterAnimation, WordAnimation}  from 'react-anim-text'
 import 'react-anim-text/dist/index.css'
 
 const text = "Hello";
-const textList = ["Animated"];
-const easings = ["easeInBounce","easeInCubic","easeOutBounce"];
+const textList = ["Animated", "Text"];
+const easings = ["easeOutBounce","easeOutExpo","easeOutExpo"];
 const App = () => {
   return(
     <div>
     
-    <LetterFlow text = {text} duration={1}/>
+    <LetterAnimation type='flow' text = {text} duration={1}/>
     
-    <GrowText textList = {textList} duration={1} easings={easings}/>
+    <WordAnimation textList = {textList} duration={2} type='growText'/>
     </div>
     );
 }

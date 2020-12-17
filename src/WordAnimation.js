@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState } from 'react'
 import './styles.module.css'
 import animate from './utils/animate.ts'
-
+import {animationMap} from './utils/animations.ts'
 const initialPhase = {scale:0.2, opacityVal:0}
 
 
-function GrowText(props) {
+function WordAnimation(props) {
 
   let count = 0;
   let done = false;
@@ -13,10 +13,8 @@ function GrowText(props) {
   const requestRef = useRef();
   const previousTimeRef = useRef();
   const keyframes = {
-    values: [{scale:0.2, opacityVal: 0},{scale:1, opacityVal: 1},{scale:2, opacityVal: 0}],
+    ...animationMap[props.type],
     duration: props.duration,
-    times: [0,0.5,1],
-    easings: props.easings,
     startOffset: 1
   }
 
@@ -61,4 +59,4 @@ const styles = {
   right: "0"
 }
 
-export default GrowText;
+export default WordAnimation;
