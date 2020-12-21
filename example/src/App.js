@@ -1,6 +1,6 @@
 import React from 'react'
 
-import  {LetterAnimation, WordAnimation}  from 'react-anim-text'
+import  {LetterAnimation, WordAnimation, AnimationType}  from 'react-anim-text'
 import 'react-anim-text/dist/index.css'
 
 const text = "Hello";
@@ -10,9 +10,10 @@ const App = () => {
   return(
     <div>
     
-    <LetterAnimation type='flow' text = {text} duration={1}/>
+    <LetterAnimation type={AnimationType.WAVE} text = {text} duration={5}/>
     
-    <WordAnimation textList = {textList} duration={2} type='growText'/>
+    <LetterAnimation text = {text} duration={2} type={AnimationType.GROWTEXT}/>
+    <WordAnimation type={AnimationType.GROWTEXT} textList = {textList} duration={3}/>
     </div>
     );
 }

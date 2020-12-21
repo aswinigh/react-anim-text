@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './styles.module.css'
 import animate from './utils/animate.ts';
-import {animationMap} from './utils/animations.ts';
+import {AnimationType} from './utils/animations.ts';
 
-const initialPhase = {scale:4, opacityVal:0}
+const initialPhase = {scale:4, opacity:0}
 
 function LetterAnimation(props)
 {
@@ -20,9 +20,9 @@ function LetterAnimation(props)
   let animationStates = Array(countofwords).fill(initialPhase);
   for(let i=0;i<countofwords;i++){
     keyframes[i] = {
-    ...animationMap[props.type],
+    ...props.type||AnimationType.GROWTEXT,
     duration: props.duration/countofwords, 
-    startOffset: 0.5+i*0.5
+    startOffset: 0.5+i*0.1
    };
   }
   // console.log(keyframes);
@@ -42,7 +42,7 @@ function LetterAnimation(props)
           if(count>keyframes[i].startOffset && count<keyframes[i].startOffset+keyframes[i].duration)
             animationStates[i] = animate(count-keyframes[i].startOffset, keyframes[i]);
         }
-        console.log(animationStates[0].scale)
+        // console.log(animationStates[0])
         setAnimationState(
           [...animationStates]
         );
@@ -64,11 +64,11 @@ function LetterAnimation(props)
      return (
       <h1 style = {{textAlign: "center", fontWeight: "900"}}>
       { 
-      animationState.map(({opacityVal, scale}, index) => {
-        // console.log(scale);
+      animationState.map((style, index) => {
+        // console.log(style);
         return( 
           
-        <span style = {{display:"inline-block" ,transform: "scale("+scale+") translateZ(0px)" , opacity: opacityVal}}>{textList[index]}</span>
+        <span style = {{...style,display:"inline-block"}}>{textList[index]}</span>
         
         )
       })

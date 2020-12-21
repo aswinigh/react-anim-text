@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState } from 'react'
 import './styles.module.css'
 import animate from './utils/animate.ts'
-import {animationMap} from './utils/animations.ts'
-const initialPhase = {scale:0.2, opacityVal:0}
+import {AnimationType} from './utils/animations.ts'
+const initialPhase = {scale:0.2, opacity:0}
 
 
 function WordAnimation(props) {
@@ -13,7 +13,7 @@ function WordAnimation(props) {
   const requestRef = useRef();
   const previousTimeRef = useRef();
   const keyframes = {
-    ...animationMap[props.type],
+    ...props.type,
     duration: props.duration,
     startOffset: 1
   }
@@ -41,9 +41,9 @@ function WordAnimation(props) {
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
      return (
-      <h1 style = {{position: "relative", fontWeight: "900"}}>
+      <h1 style = {{position: "relative", textAlign: "center",fontWeight: "900"}}>
         
-        <div style = {{...styles,transform: "scale("+animationState.scale+")", opacity: animationState.opacityVal}}>{props.textList[0]}</div>
+        <div style = {{...styles,...animationState}}>{props.textList[0]}</div>
 
       </h1>
      );
@@ -51,12 +51,9 @@ function WordAnimation(props) {
 }
 
 const styles = {
-  position: "absolute",
-  textAlign: "center",
-  margin: "auto",
-  left: "0",
-  top: "0.3em",
-  right: "0"
+  display:"inline-block",
+  
+   fontWeight: "900"
 }
 
 export default WordAnimation;
